@@ -18,7 +18,7 @@ class TempController extends Controller
     public function city(){
         return City::all();
     }
-    
+
     public function city_with_state($state_id){
         return City::where('state_id',$state_id)->get();
     }
@@ -32,14 +32,14 @@ class TempController extends Controller
                     'message' => ['These credentials do not match our records.']
                 ], 404);
             }
-        
+
              $token = $user->createToken('my-app-token')->plainTextToken;
-        
+
             $response = [
                 'user' => $user,
                 'token' => $token
             ];
-        
+
              return response($response, 201);
     }
 }

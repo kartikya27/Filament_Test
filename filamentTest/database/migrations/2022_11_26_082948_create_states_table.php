@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,17 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
-            $table->id('id');
-            // $table->integer('state_id')->unsigned();
-            $table->string('city');
-            
-           
+        Schema::create('states', function (Blueprint $table) {
+            $table->id();
+            $table->string('state');
             $table->timestamps();
-
-            $table->foreignId('state_id')
-                ->references('state_id')->on('states')
-            ;
         });
     }
 
@@ -35,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        $table->dropForeign('posts_state_id_foreign');
-        Schema::dropIfExists('cities');
-        
+        Schema::dropIfExists('states');
     }
 };

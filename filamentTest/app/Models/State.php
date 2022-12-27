@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class State extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'state_id';
-    protected $fillable = ['state'];
 
-    public function states(){
+    protected $fillable = ['state', 'banner'];
+
+    public function states()
+    {
         return $this->hasMany(State::class, 'state_id');
     }
 }

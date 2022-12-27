@@ -16,10 +16,8 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id('id');
             $table->string('city');
-            $table->integer('state_id')->unsigned();
-            $table->foreign('state_id')
-                ->references('state_id')->on('states')
-                ->onDelete('cascade');
+           
+            $table->foreignId('state_id')->constrained('states');
             $table->timestamps();
         });
     }
@@ -31,8 +29,7 @@ return new class extends Migration
      */
     public function down()
     {
-        $table->dropForeign('posts_state_id_foreign');
+
         Schema::dropIfExists('cities');
-        
     }
 };

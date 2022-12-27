@@ -7,6 +7,7 @@ use App\Filament\Resources\CityResource\RelationManagers;
 use App\Models\City;
 use App\Models\State;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Modal\Actions\Action;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -18,7 +19,13 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Wizard\Step;
+use Filament\Notifications\Collection;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Str;
 
 class CityResource extends Resource
 {
@@ -36,17 +43,23 @@ class CityResource extends Resource
                         ->options(State::all()->pluck('state', 'state_id')->toArray())
                         ->reactive(),
 
-               
-                ]),
-                TextInput::make('city'),
 
-                // Card::make()->schema([
-                //     Repeater::make('city')->relationship()
-                //      ->schema([
-                //          TextInput::make('city'),
-                //      ])
-                //     ->defaultItems(count:1)->createItemButtonLabel('Add City'),
-                // ]),
+                ]),
+
+                // TextInput::make('city'),
+
+                Card::make()->schema([
+                    Repeater::make(name:'city')
+                     ->schema([
+                         TextInput::make('city'),
+                     ])
+                    ->defaultItems(count:1)->createItemButtonLabel('Add City'),
+                ]),
+
+
+
+
+
             ]);
     }
 
@@ -56,14 +69,7 @@ class CityResource extends Resource
             ->columns([
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('city')->searchable(),
-                TextColumn::make('state_id',function (callable $get){
-
-                    $state = State::where(function ($q) use($get){
-                        // $get('state_id') && $q->where('state_id',$get('state_id') );
-                        // return $q;
-                    });
-                    // return $state['state'];
-                })
+                TextColumn::make('state_id')
                     ->label('State')->searchable(),
             ])
             ->filters([
@@ -76,14 +82,14 @@ class CityResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -91,5 +97,7 @@ class CityResource extends Resource
             'create' => Pages\CreateCity::route('/create'),
             'edit' => Pages\EditCity::route('/{record}/edit'),
         ];
-    }    
+    }
+
+    
 }

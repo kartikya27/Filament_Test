@@ -6,6 +6,7 @@ use App\Filament\Resources\StateResource\Pages;
 use App\Filament\Resources\StateResource\RelationManagers;
 use App\Models\State;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -26,7 +27,9 @@ class StateResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make(name :'state')
+                TextInput::make(name :'state'),
+                FileUpload::make('banner')->columnSpanFull()
+                            ->visibility('public')->directory('states'),
             ]);
     }
 
@@ -35,12 +38,10 @@ class StateResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('state_id')->label('Id')->sortable(),
-                // TextColumn::make('Sr', function(){
-                //     for ($x = 1; $x <= 10; $x++) {
-                //         echo $x;
-                //       }
-                // }),
+                TextColumn::make('index')->rowIndex(),
                 TextColumn::make('state')->searchable(),
+
+
                 // ViewColumn::make('status')->view('filament.tables.columns.status')
             ])
             ->filters([
@@ -53,14 +54,14 @@ class StateResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -68,5 +69,5 @@ class StateResource extends Resource
             'create' => Pages\CreateState::route('/create'),
             'edit' => Pages\EditState::route('/{record}/edit'),
         ];
-    }    
+    }
 }
